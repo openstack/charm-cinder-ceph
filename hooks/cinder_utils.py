@@ -18,7 +18,6 @@ from collections import OrderedDict
 from tempfile import NamedTemporaryFile
 
 from charmhelpers.contrib.openstack import (
-    context,
     templating,
 )
 from charmhelpers.contrib.openstack.alternatives import install_alternative
@@ -26,6 +25,7 @@ from charmhelpers.contrib.openstack.utils import get_os_codename_package
 from charmhelpers.core.hookenv import (
     hook_name,
     relation_ids,
+    application_name,
     service_name,
 )
 from charmhelpers.core.host import mkdir
@@ -58,6 +58,11 @@ def ceph_config_file():
     return CHARM_CEPH_CONF.format(service_name())
 
 
+def ceph_replication_device_config_file():
+    return CHARM_CEPH_CONF.format(
+        '{}-replication-device'.format(application_name()))
+
+
 def register_configs():
     """
     Register config files with their respective contexts.
@@ -87,11 +92,25 @@ def register_configs():
         install_alternative(os.path.basename(CEPH_CONF),
                             CEPH_CONF, ceph_config_file())
         CONFIG_FILES[ceph_config_file()] = {
-            'hook_contexts': [context.CephContext(),
+            'hook_contexts': [cinder_contexts.CinderCephContext(),
                               cinder_contexts.CephAccessContext()],
             'services': ['cinder-volume'],
         }
         confs.append(ceph_config_file())
+
+    relation_present = relation_ids('ceph-replication-device') and \
+        hook_name() != 'ceph-replication-device-relation-broken'
+    if relation_present:
+        mkdir(os.path.dirname(ceph_replication_device_config_file()))
+
+        if not os.path.exists(ceph_replication_device_config_file()):
+            open(ceph_replication_device_config_file(), 'wt').close()
+
+        CONFIG_FILES[ceph_replication_device_config_file()] = {
+            'hook_contexts': [cinder_contexts.CephReplicationDeviceContext()],
+            'services': ['cinder-volume'],
+        }
+        confs.append(ceph_replication_device_config_file())
 
     for conf in confs:
         configs.register(conf, CONFIG_FILES[conf]['hook_contexts'])

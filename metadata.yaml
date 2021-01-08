@@ -30,3 +30,5 @@ requires:
     scope: container
   ceph:
     interface: ceph-client
+  ceph-replication-device:
+    interface: ceph-client

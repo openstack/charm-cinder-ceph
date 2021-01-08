@@ -62,6 +62,7 @@ from charmhelpers.core.hookenv import (
     log,
     relation_ids,
     relation_set,
+    application_name,
     service_name,
     status_set,
     UnregisteredHookError,
@@ -76,6 +77,7 @@ from charmhelpers.payload.execd import execd_preinstall
 from cinder_contexts import (
     ceph_config_file,
     CephSubordinateContext,
+    CephReplicationDeviceContext,
 )
 from cinder_utils import (
     CEPH_CONF,
@@ -85,6 +87,7 @@ from cinder_utils import (
     restart_map,
     scrub_old_style_ceph,
     VERSION_PACKAGE,
+    ceph_replication_device_config_file,
 )
 
 
@@ -107,6 +110,13 @@ def ceph_joined():
     if not os.path.isdir('/etc/ceph'):
         os.mkdir('/etc/ceph')
     send_application_name()
+
+
+@hooks.hook('ceph-replication-device-relation-joined')
+def ceph_replication_device_joined():
+    data = {'application-name': '{}-replication-device'.format(
+        application_name())}
+    relation_set(relation_settings=data)
 
 
 def get_ceph_request():
@@ -249,12 +259,39 @@ def ceph_changed():
             level=DEBUG)
 
 
+@hooks.hook('ceph-replication-device-relation-changed')
+@restart_on_change(restart_map())
+def ceph_replication_device_changed():
+    if 'ceph-replication-device' not in CONFIGS.complete_contexts():
+        log('ceph-replication-device relation incomplete.')
+        return
+
+    app_name = '{}-replication-device'.format(application_name())
+    if not ensure_ceph_keyring(service=app_name,
+                               relation='ceph-replication-device',
+                               user='cinder', group='cinder'):
+        log('Could not create ceph keyring.')
+        return
+
+    CONFIGS.write_all()
+
+    for rid in relation_ids('storage-backend'):
+        storage_backend(rid)
+
+
 @hooks.hook('ceph-relation-broken')
 def ceph_broken():
     service = service_name()
     delete_keyring(service=service)
     CONFIGS.write_all()
     remove_alternative(os.path.basename(CEPH_CONF), ceph_config_file())
+
+
+@hooks.hook('ceph-replication-device-relation-broken')
+def ceph_replication_device_broken():
+    app_name = '{}-replication-device'.format(application_name())
+    delete_keyring(service=app_name)
+    CONFIGS.write_all()
 
 
 @hooks.hook('config-changed')
@@ -274,13 +311,28 @@ def write_and_restart():
 def storage_backend(rel_id=None):
     if 'ceph' not in CONFIGS.complete_contexts():
         log('ceph relation incomplete. Peer not ready?')
-    else:
-        relation_set(
-            relation_id=rel_id,
-            backend_name=service_name(),
-            subordinate_configuration=json.dumps(CephSubordinateContext()()),
-            stateless=True,
-        )
+        return
+
+    subordinate_config = CephSubordinateContext()()
+
+    if 'ceph-replication-device' in CONFIGS.complete_contexts():
+        replication_device = {
+            'backend_id': 'ceph',
+            'conf': ceph_replication_device_config_file(),
+            'user': '{}-replication-device'.format(application_name())
+        }
+        replication_device_str = ','.join(
+            ['{}:{}'.format(k, v) for k, v in replication_device.items()])
+        subordinate_config['cinder'][
+            '/etc/cinder/cinder.conf']['sections'][application_name()].append(
+                ('replication_device', replication_device_str))
+
+    relation_set(
+        relation_id=rel_id,
+        backend_name=service_name(),
+        subordinate_configuration=json.dumps(subordinate_config),
+        stateless=True,
+    )
 
 
 @hooks.hook('storage-backend-relation-changed')
@@ -328,12 +380,42 @@ def ceph_access_joined(relation_id=None):
 
     # NOTE(jamespage): get key from ceph using a context
     ceph_keys = CephContext()()
-
-    relation_set(
-        relation_id=relation_id,
-        relation_settings={'key': ceph_keys.get('key'),
-                           'secret-uuid': leader_get('secret-uuid')}
-    )
+    if 'ceph-replication-device' not in CONFIGS.complete_contexts():
+        relation_data = {
+            'key': ceph_keys.get('key'),
+            'secret-uuid': leader_get('secret-uuid')
+        }
+        relation_set(
+            relation_id=relation_id,
+            relation_settings=relation_data
+        )
+    else:
+        replication_secret_uuid = leader_get('replication-device-secret-uuid')
+        if not replication_secret_uuid:
+            if is_leader():
+                leader_set(
+                    {'replication-device-secret-uuid': str(uuid.uuid4())})
+            else:
+                log('Deferring keyrings provision until '
+                    'leader seeds replication device uuid')
+                return
+        ceph_replication_keys = CephReplicationDeviceContext()()
+        keyrings = [
+            {
+                'name': application_name(),
+                'key': ceph_keys.get('key'),
+                'secret-uuid': leader_get('secret-uuid')
+            },
+            {
+                'name': '{}-replication-device'.format(application_name()),
+                'key': ceph_replication_keys.get('key'),
+                'secret-uuid': leader_get('replication-device-secret-uuid')
+            }
+        ]
+        relation_set(
+            relation_id=relation_id,
+            keyrings=json.dumps(keyrings)
+        )
 
 
 @hooks.hook('pre-series-upgrade')

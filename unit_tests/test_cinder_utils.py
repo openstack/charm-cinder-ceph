@@ -24,6 +24,7 @@ TO_PATCH = [
     # helpers.core.hookenv
     'relation_ids',
     'service_name',
+    'application_name',
     # storage_utils
     'get_os_codename_package',
     'templating',

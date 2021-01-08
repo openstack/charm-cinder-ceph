@@ -38,7 +38,9 @@ TO_PATCH = [
     'CONFIGS',
     'CEPH_CONF',
     'ceph_config_file',
+    'ceph_replication_device_config_file',
     # charmhelpers.core.hookenv
+    'application_name',
     'config',
     'relation_ids',
     'relation_set',
@@ -327,6 +329,53 @@ class TestCinderHooks(CharmTestCase):
             stateless=True,
         )
 
+    @patch('charmhelpers.core.hookenv.config')
+    def test_storage_backend_replication_device(self, mock_config):
+        self.application_name.return_value = 'test'
+        app_name = '{}-replication-device'.format(self.application_name())
+        self.service_name.return_value = app_name
+        self.CONFIGS.complete_contexts.return_value = [
+            'ceph', 'ceph-replication-device']
+
+        def func():
+            return {
+                'cinder': {
+                    '/etc/cinder/cinder.conf': {
+                        'sections': {
+                            'test': []
+                        }
+                    }
+                }
+            }
+
+        self.CephSubordinateContext.return_value = func
+        hooks.hooks.execute(['hooks/storage-backend-relation-joined'])
+
+        replication_device = {
+            'backend_id': 'ceph',
+            'conf': self.ceph_replication_device_config_file(),
+            'user': 'test-replication-device'
+        }
+        replication_device_str = ','.join(
+            ['{}:{}'.format(k, v) for k, v in replication_device.items()])
+        expected_config = {
+            'cinder': {
+                '/etc/cinder/cinder.conf': {
+                    'sections': {
+                        'test': [
+                            ('replication_device', replication_device_str)
+                        ]
+                    }
+                }
+            }
+        }
+        self.relation_set.assert_called_with(
+            relation_id=None,
+            backend_name='test-replication-device',
+            subordinate_configuration=json.dumps(expected_config),
+            stateless=True,
+        )
+
     @patch.object(hooks, 'ceph_access_joined')
     @patch.object(hooks, 'storage_backend')
     def test_leader_settings_changed(self,
@@ -441,3 +490,38 @@ class TestCinderHooks(CharmTestCase):
         hooks.assess_status()
         self.status_set.assert_called_once_with(
             'blocked', 'Invalid configuration: fake message')
+
+    @patch('charmhelpers.core.hookenv.config')
+    @patch.object(hooks, 'storage_backend')
+    def test_ceph_replication_device_changed(self,
+                                             storage_backend,
+                                             mock_config):
+        self.CONFIGS.complete_contexts.return_value = [
+            'ceph-replication-device']
+        self.ensure_ceph_keyring.return_value = True
+        self.relation_ids.return_value = ['storage-backend:1']
+        app_name = '{}-replication-device'.format(self.application_name())
+        hooks.hooks.execute(['hooks/ceph-replication-device-relation-changed'])
+        self.ensure_ceph_keyring.assert_called_with(
+            service=app_name,
+            relation='ceph-replication-device',
+            user='cinder',
+            group='cinder')
+        self.assertTrue(self.CONFIGS.write_all.called)
+        storage_backend.assert_called_with('storage-backend:1')
+
+    @patch('charmhelpers.core.hookenv.config')
+    def test_ceph_replication_device_broken(self, mock_config):
+        app_name = '{}-replication-device'.format(self.application_name())
+        self.service_name.return_value = app_name
+        hooks.hooks.execute(['hooks/ceph-replication-device-relation-broken'])
+        self.delete_keyring.assert_called_with(
+            service=self.service_name.return_value)
+        self.assertTrue(self.CONFIGS.write_all.called)
+
+    @patch('charmhelpers.core.hookenv.config')
+    def test_ceph_replication_device_joined(self, mock_config):
+        data = {'application-name': '{}-replication-device'.format(
+            self.application_name())}
+        hooks.hooks.execute(['hooks/ceph-replication-device-relation-joined'])
+        self.relation_set.assert_called_with(relation_settings=data)

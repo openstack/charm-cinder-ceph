@@ -17,17 +17,25 @@ from charmhelpers.core.hookenv import (
     service_name,
     is_relation_made,
     leader_get,
+    log,
+    relation_get,
     relation_ids,
     related_units,
+    DEBUG,
 )
 
 from charmhelpers.contrib.openstack.context import (
+    CephContext,
     OSContextGenerator,
 )
 
 from charmhelpers.contrib.openstack.utils import (
     get_os_codename_package,
     CompareOpenStackReleases,
+)
+
+from charmhelpers.contrib.network.ip import (
+    format_ipv6_addr,
 )
 
 CHARM_CEPH_CONF = '/var/lib/charm/{}/ceph.conf'
@@ -99,3 +107,51 @@ class CephSubordinateContext(OSContextGenerator):
                  config('rbd-flatten-volume-from-snapshot')))
 
         return {'cinder': {'/etc/cinder/cinder.conf': {'sections': section}}}
+
+
+class CephReplicationDeviceContext(CephContext):
+    """Generates context for /etc/ceph/ceph.conf templates."""
+
+    interfaces = ['ceph-replication-device']
+
+    def __call__(self):
+        if not relation_ids('ceph-replication-device'):
+            return {}
+        log('Generating template context for ceph-replication-device',
+            level=DEBUG)
+        mon_hosts = []
+        ctxt = {
+            'use_syslog': str(config('use-syslog')).lower()
+        }
+        for rid in relation_ids('ceph-replication-device'):
+            for unit in related_units(rid):
+                if not ctxt.get('auth'):
+                    ctxt['auth'] = relation_get('auth', rid=rid, unit=unit)
+                if not ctxt.get('key'):
+                    ctxt['key'] = relation_get('key', rid=rid, unit=unit)
+                ceph_addrs = relation_get('ceph-public-address', rid=rid,
+                                          unit=unit)
+                if ceph_addrs:
+                    for addr in ceph_addrs.split(' '):
+                        mon_hosts.append(format_ipv6_addr(addr) or addr)
+                else:
+                    priv_addr = relation_get('private-address', rid=rid,
+                                             unit=unit)
+                    mon_hosts.append(format_ipv6_addr(priv_addr) or priv_addr)
+
+        ctxt['mon_hosts'] = ' '.join(sorted(mon_hosts))
+        if not self.context_complete(ctxt):
+            return {}
+
+        return ctxt
+
+
+class CinderCephContext(CephContext):
+
+    def __call__(self):
+        ctxt = super(CinderCephContext, self).__call__()
+        # NOTE: If "rbd-mirroring-mode" is set to "image" we are going
+        # to ignore default 'rbd_features' that are set in the context
+        if config('rbd-mirror-mode') == "image":
+            ctxt.pop('rbd_features', None)
+        return ctxt
