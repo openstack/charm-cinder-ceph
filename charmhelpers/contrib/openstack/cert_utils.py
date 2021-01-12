@@ -30,7 +30,6 @@ from charmhelpers.core.hookenv import (
     relation_get,
     relation_ids,
     remote_service_name,
-    unit_get,
     NoNetworkBinding,
     log,
     WARNING,
@@ -41,6 +40,7 @@ from charmhelpers.contrib.openstack.ip import (
     get_vip_in_network,
     ADDRESS_MAP,
     get_default_api_bindings,
+    local_address,
 )
 from charmhelpers.contrib.network.ip import (
     get_relation_ip,
@@ -81,7 +81,7 @@ class CertRequest(object):
 
     def add_hostname_cn(self):
         """Add a request for the hostname of the machine"""
-        ip = unit_get('private-address')
+        ip = local_address(unit_get_fallback='private-address')
         addresses = [ip]
         # If a vip is being used without os-hostname config or
         # network spaces then we need to ensure the local units
@@ -194,7 +194,7 @@ def get_certificate_sans(bindings=None):
     :returns: List of binding string names
     :rtype: List[str]
     """
-    _sans = [unit_get('private-address')]
+    _sans = [local_address(unit_get_fallback='private-address')]
     if bindings:
         # Add default API bindings to bindings list
         bindings = list(bindings + get_default_api_bindings())
@@ -260,7 +260,7 @@ def create_ip_cert_links(ssl_dir, custom_hostname_link=None, bindings=None):
                 os.symlink(requested_key, key)
 
     # Handle custom hostnames
-    hostname = get_hostname(unit_get('private-address'))
+    hostname = get_hostname(local_address(unit_get_fallback='private-address'))
     hostname_cert = os.path.join(
         ssl_dir,
         'cert_{}'.format(hostname))
