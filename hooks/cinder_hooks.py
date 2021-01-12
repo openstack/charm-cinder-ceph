@@ -277,6 +277,8 @@ def ceph_replication_device_changed():
 
     for rid in relation_ids('storage-backend'):
         storage_backend(rid)
+    for rid in relation_ids('ceph-access'):
+        ceph_access_joined(rid)
 
 
 @hooks.hook('ceph-relation-broken')
@@ -300,6 +302,8 @@ def write_and_restart():
     # NOTE(jamespage): seed uuid for use on compute nodes with libvirt
     if not leader_get('secret-uuid') and is_leader():
         leader_set({'secret-uuid': str(uuid.uuid4())})
+    if not leader_get('replication-device-secret-uuid') and is_leader():
+        leader_set({'replication-device-secret-uuid': str(uuid.uuid4())})
 
     # NOTE(jamespage): trigger any configuration related changes
     #                  for cephx permissions restrictions
@@ -319,7 +323,8 @@ def storage_backend(rel_id=None):
         replication_device = {
             'backend_id': 'ceph',
             'conf': ceph_replication_device_config_file(),
-            'user': '{}-replication-device'.format(application_name())
+            'user': '{}-replication-device'.format(application_name()),
+            'secret_uuid': leader_get('replication-device-secret-uuid'),
         }
         replication_device_str = ','.join(
             ['{}:{}'.format(k, v) for k, v in replication_device.items()])

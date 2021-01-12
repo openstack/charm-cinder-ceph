@@ -334,6 +334,7 @@ class TestCinderHooks(CharmTestCase):
         self.application_name.return_value = 'test'
         app_name = '{}-replication-device'.format(self.application_name())
         self.service_name.return_value = app_name
+        self.leader_get.return_value = 'test-secret-uuid'
         self.CONFIGS.complete_contexts.return_value = [
             'ceph', 'ceph-replication-device']
 
@@ -354,7 +355,8 @@ class TestCinderHooks(CharmTestCase):
         replication_device = {
             'backend_id': 'ceph',
             'conf': self.ceph_replication_device_config_file(),
-            'user': 'test-replication-device'
+            'user': 'test-replication-device',
+            'secret_uuid': 'test-secret-uuid',
         }
         replication_device_str = ','.join(
             ['{}:{}'.format(k, v) for k, v in replication_device.items()])
@@ -369,6 +371,8 @@ class TestCinderHooks(CharmTestCase):
                 }
             }
         }
+        self.leader_get.assert_called_once_with(
+            'replication-device-secret-uuid')
         self.relation_set.assert_called_with(
             relation_id=None,
             backend_name='test-replication-device',
@@ -454,10 +458,16 @@ class TestCinderHooks(CharmTestCase):
         self.leader_get.reset_mock()
         self.leader_get.return_value = None
         self.is_leader.return_value = True
-        mock_uuid4.return_value = 42
+        mock_uuid4.side_effect = [42, 64]
         hooks.write_and_restart()
-        self.leader_get.assert_called_once_with('secret-uuid')
-        self.leader_set.assert_called_once_with({'secret-uuid': '42'})
+        self.leader_get.assert_has_calls([
+            call('secret-uuid'),
+            call('replication-device-secret-uuid')
+        ])
+        self.leader_set.assert_has_calls([
+            call({'secret-uuid': '42'}),
+            call({'replication-device-secret-uuid': '64'})
+        ])
 
     @patch.object(hooks, 'get_ceph_request')
     @patch.object(hooks, 'is_request_complete')
@@ -492,14 +502,17 @@ class TestCinderHooks(CharmTestCase):
             'blocked', 'Invalid configuration: fake message')
 
     @patch('charmhelpers.core.hookenv.config')
+    @patch.object(hooks, 'ceph_access_joined')
     @patch.object(hooks, 'storage_backend')
     def test_ceph_replication_device_changed(self,
                                              storage_backend,
+                                             ceph_access_joined,
                                              mock_config):
         self.CONFIGS.complete_contexts.return_value = [
             'ceph-replication-device']
         self.ensure_ceph_keyring.return_value = True
-        self.relation_ids.return_value = ['storage-backend:1']
+        self.relation_ids.side_effect = [
+            ['storage-backend:1'], ['ceph-access:1']]
         app_name = '{}-replication-device'.format(self.application_name())
         hooks.hooks.execute(['hooks/ceph-replication-device-relation-changed'])
         self.ensure_ceph_keyring.assert_called_with(
@@ -509,6 +522,7 @@ class TestCinderHooks(CharmTestCase):
             group='cinder')
         self.assertTrue(self.CONFIGS.write_all.called)
         storage_backend.assert_called_with('storage-backend:1')
+        ceph_access_joined.assert_called_with('ceph-access:1')
 
     @patch('charmhelpers.core.hookenv.config')
     def test_ceph_replication_device_broken(self, mock_config):
