@@ -60,6 +60,7 @@ elif __platform__ == "centos":
     )  # flake8: noqa -- ignore F401 for this import
 
 UPDATEDB_PATH = '/etc/updatedb.conf'
+CA_CERT_DIR = '/usr/local/share/ca-certificates'
 
 
 def service_start(service_name, **kwargs):
@@ -1082,7 +1083,7 @@ def install_ca_cert(ca_cert, name=None):
         ca_cert = ca_cert.encode('utf8')
     if not name:
         name = 'juju-{}'.format(charm_name())
-    cert_file = '/usr/local/share/ca-certificates/{}.crt'.format(name)
+    cert_file = '{}/{}.crt'.format(CA_CERT_DIR, name)
     new_hash = hashlib.md5(ca_cert).hexdigest()
     if file_hash(cert_file) == new_hash:
         return
