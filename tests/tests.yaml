@@ -14,13 +14,14 @@ gate_bundles:
   - bionic-ussuri
   - bionic-train
   - bionic-stein
-  - bionic-rocky
   - bionic-queens
-  - xenial-queens
+  - xenial-mitaka
+dev_bundles:
+  - trusty-mitaka
   - xenial-ocata
   - xenial-pike
-  - xenial-mitaka
-  - trusty-mitaka
+  - xenial-queens
+  - bionic-rocky
 configure:
   - zaza.openstack.charm_tests.glance.setup.add_cirros_image
   - zaza.openstack.charm_tests.glance.setup.add_lts_image
