@@ -1,12 +1,17 @@
 charm_name: cinder-ceph
+
 comment: |
         The cinder-ceph charm assertions are intended to be the sum of the
         cinder and ceph-mon zaza charm tests.
+
 smoke_bundles:
   - bionic-train
+
 gate_bundles:
   - groovy-victoria-ec
   - groovy-victoria
+  - focal-wallaby-ec
+  - focal-wallaby
   - focal-victoria-ec
   - focal-victoria
   - focal-ussuri-ec
@@ -16,12 +21,16 @@ gate_bundles:
   - bionic-stein
   - bionic-queens
   - xenial-mitaka
+
 dev_bundles:
   - trusty-mitaka
   - xenial-ocata
   - xenial-pike
   - xenial-queens
   - bionic-rocky
+  - hirsute-wallaby-ec
+  - hirsute-wallaby
+
 configure:
   - zaza.openstack.charm_tests.glance.setup.add_cirros_image
   - zaza.openstack.charm_tests.glance.setup.add_lts_image
@@ -29,6 +38,7 @@ configure:
   - zaza.openstack.charm_tests.neutron.setup.basic_overcloud_network
   - zaza.openstack.charm_tests.nova.setup.create_flavors
   - zaza.openstack.charm_tests.nova.setup.manage_ssh_key
+
 tests:
   # do cinder tests early as they are sensitive to service restarts that occur
   # with the ceph tests (due to relation changes on ceph-mon and ceph-osd).
@@ -42,9 +52,10 @@ tests:
   - zaza.openstack.charm_tests.ceph.osd.tests.SecurityTest
   - zaza.openstack.charm_tests.policyd.tests.CinderTests
   - zaza.openstack.charm_tests.ceph.tests.CheckPoolTypes
+
 tests_options:
   policyd:
     service: cinder
   force_deploy:
-    - groovy-victoria-ec
-    - groovy-victoria
+    - hirsute-wallaby
+    - hirsute-wallaby-ec
