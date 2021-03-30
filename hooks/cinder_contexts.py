@@ -73,6 +73,11 @@ class CephSubordinateContext(OSContextGenerator):
         else:
             volume_driver = 'cinder.volume.driver.RBDDriver'
 
+        if config('volume-backend-name'):
+            volume_backend_name = config('volume-backend-name')
+        else:
+            volume_backend_name = service
+
         if config('pool-type') == 'erasure-coded':
             pool_name = (
                 config('ec-rbd-metadata-pool') or
@@ -81,8 +86,7 @@ class CephSubordinateContext(OSContextGenerator):
             )
         else:
             pool_name = config('rbd-pool-name') or service
-
-        section = {service: [('volume_backend_name', service),
+        section = {service: [('volume_backend_name', volume_backend_name),
                              ('volume_driver', volume_driver),
                              ('rbd_pool', pool_name),
                              ('rbd_user', service),

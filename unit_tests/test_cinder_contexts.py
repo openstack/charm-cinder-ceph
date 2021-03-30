@@ -118,6 +118,32 @@ class TestCinderContext(CharmTestCase):
                 }
             }})
 
+    def test_ceph_explicit_volume_backend_name(self):
+        self.test_config.set('volume-backend-name', 'special-backend-name')
+        self.is_relation_made.return_value = True
+        self.get_os_codename_package.return_value = "mitaka"
+        service = 'mycinder'
+        self.service_name.return_value = service
+        self.assertEqual(
+            contexts.CephSubordinateContext()(),
+            {"cinder": {
+                "/etc/cinder/cinder.conf": {
+                    "sections": {
+                        service: [
+                            ('volume_backend_name', 'special-backend-name'),
+                            ('volume_driver',
+                             'cinder.volume.drivers.rbd.RBDDriver'),
+                            ('rbd_pool', service),
+                            ('rbd_user', service),
+                            ('rbd_secret_uuid', 'libvirt-uuid'),
+                            ('rbd_ceph_conf',
+                             '/var/lib/charm/mycinder/ceph.conf'),
+                            ('report_discard_supported', True)
+                        ]
+                    }
+                }
+            }})
+
     def test_ceph_related_erasure_coded(self):
         self.is_relation_made.return_value = True
         self.get_os_codename_package.return_value = "queens"
