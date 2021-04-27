@@ -21,6 +21,10 @@ Specialised use cases:
   mapping pools with multiple cinder-ceph applications. For instance, different
   pools could be used for HDD or SSD devices. See option `rbd-pool-name` below.
 
+> **Note**: There is currently no upgrade path to using the cinder-ceph charm
+  for older deployments that have the cinder and ceph-mon applications related
+  directly. This issue is tracked in bug [LP #1727184][lp-bug-1727184].
+
 # Usage
 
 ## Configuration
@@ -137,11 +141,17 @@ deployed a relation is needed between them:
 
     juju add-relation cinder-ceph:ceph-access nova-compute:ceph-access
 
+# Documentation
+
+The OpenStack Charms project maintains two documentation guides:
+
+* [OpenStack Charm Guide][cg]: for project information, including development
+  and support notes
+* [OpenStack Charms Deployment Guide][cdg]: for charm usage information
+
 # Bugs
 
 Please report bugs on [Launchpad][lp-bugs-charm-cinder-ceph].
-
-For general charm questions refer to the [OpenStack Charm Guide][cg].
 
 <!-- LINKS -->
 
@@ -158,3 +168,4 @@ For general charm questions refer to the [OpenStack Charm Guide][cg].
 [lp-bugs-charm-cinder-ceph]: https://bugs.launchpad.net/charm-cinder-ceph/+filebug
 [cdg-ceph-erasure-coding]: https://docs.openstack.org/project-deploy-guide/charm-deployment-guide/latest/app-erasure-coding.html
 [ceph-bluestore-compression]: https://docs.ceph.com/en/latest/rados/configuration/bluestore-config-ref/#inline-compression
+[lp-bug-1727184]: https://bugs.launchpad.net/charm-cinder-ceph/+bug/1727184
