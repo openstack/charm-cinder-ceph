@@ -1,7 +1,7 @@
 variables:
-  openstack-origin: &openstack-origin distro
+  openstack-origin: &openstack-origin cloud:focal-xena
 
-series: &series groovy
+series: &series focal
 
 machines:
   0:

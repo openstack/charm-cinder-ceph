@@ -4,25 +4,38 @@
       - charm-functional-jobs
     check:
       jobs:
+      - impish-xena:
+          voting: false
+      - impish-xena-ec_cinder-ceph:
+          voting: false
       - hisute-wallaby-ec_cinder-ceph
-      - groovy-victoria-ec_cinder-ceph
+      - focal-xena:
+          voting: false
+      - focal-xena-ec_cinder-ceph:
+          voting: false
       - focal-wallaby-ec_cinder-ceph
       - focal-victoria-ec_cinder-ceph
       - focal-ussuri-ec_cinder-ceph
 
 - job:
-    name: hisute-wallaby-ec_cinder-ceph
+    name: impish-xena-ec_cinder-ceph
     parent: func-target
     dependencies: &smoke-jobs
       - bionic-ussuri
     vars:
-      tox_extra_args: hirsute-wallaby-ec
+      tox_extra_args: impish-xena-ec
 - job:
-    name: groovy-victoria-ec_cinder-ceph
+    name: hisute-wallaby-ec_cinder-ceph
     parent: func-target
     dependencies: *smoke-jobs
     vars:
-      tox_extra_args: groovy-victoria-ec
+      tox_extra_args: hirsute-wallaby-ec
+- job:
+    name: focal-xena-ec_cinder-ceph
+    parent: func-target
+    dependencies: *smoke-jobs
+    vars:
+      tox_extra_args: focal-xena-ec
 - job:
     name: focal-wallaby-ec_cinder-ceph
     parent: func-target
