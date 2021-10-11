@@ -28,20 +28,26 @@ machines:
 applications:
 
   nova-cloud-controller-mysql-router:
-    charm: cs:~openstack-charmers-next/mysql-router
+    charm: cs:~openstack-charmers/mysql-router
+    channel: candidate
   placement-mysql-router:
-    charm: cs:~openstack-charmers-next/mysql-router
+    charm: cs:~openstack-charmers/mysql-router
+    channel: candidate
   keystone-mysql-router:
-    charm: cs:~openstack-charmers-next/mysql-router
+    charm: cs:~openstack-charmers/mysql-router
+    channel: candidate
   glance-mysql-router:
-    charm: cs:~openstack-charmers-next/mysql-router
+    charm: cs:~openstack-charmers/mysql-router
+    channel: candidate
   neutron-api-mysql-router:
-    charm: cs:~openstack-charmers-next/mysql-router
+    charm: cs:~openstack-charmers/mysql-router
+    channel: candidate
   cinder-mysql-router:
-    charm: cs:~openstack-charmers-next/mysql-router
+    charm: cs:~openstack-charmers/mysql-router
+    channel: candidate
 
   mysql-innodb-cluster:
-    charm: cs:~openstack-charmers-next/mysql-innodb-cluster
+    charm: cs:~openstack-charmers/mysql-innodb-cluster
     num_units: 3
     options:
       source: *openstack-origin
@@ -49,9 +55,10 @@ applications:
       - '0'
       - '1'
       - '2'
+    channel: candidate
 
   ceph-osd:
-    charm: cs:~openstack-charmers-next/ceph-osd
+    charm: cs:~openstack-charmers/ceph-osd
     num_units: 3
     storage:
       osd-devices: '10G'
@@ -62,9 +69,10 @@ applications:
       - '3'
       - '4'
       - '5'
+    channel: candidate
 
   ceph-mon:
-    charm: cs:~openstack-charmers-next/ceph-mon
+    charm: cs:~openstack-charmers/ceph-mon
     num_units: 3
     options:
       monitor-count: '3'
@@ -73,15 +81,17 @@ applications:
       - '6'
       - '7'
       - '8'
+    channel: candidate
 
   rabbitmq-server:
-    charm: cs:~openstack-charmers-next/rabbitmq-server
+    charm: cs:~openstack-charmers/rabbitmq-server
     num_units: 1
     to:
       - '9'
+    channel: candidate
 
   nova-cloud-controller:
-    charm: cs:~openstack-charmers-next/nova-cloud-controller
+    charm: cs:~openstack-charmers/nova-cloud-controller
     num_units: 1
     options:
       openstack-origin: *openstack-origin
@@ -89,18 +99,20 @@ applications:
       debug: true
     to:
       - '10'
+    channel: candidate
 
   placement:
-    charm: cs:~openstack-charmers-next/placement
+    charm: cs:~openstack-charmers/placement
     num_units: 1
     constraints: mem=1G
     options:
       openstack-origin: *openstack-origin
     to:
       - '11'
+    channel: candidate
 
   neutron-api:
-    charm: cs:~openstack-charmers-next/neutron-api
+    charm: cs:~openstack-charmers/neutron-api
     num_units: 1
     options:
       manage-neutron-plugin-legacy-mode: true
@@ -110,37 +122,42 @@ applications:
       neutron-security-groups: true
     to:
       - '12'
+    channel: candidate
 
   keystone:
-    charm: cs:~openstack-charmers-next/keystone
+    charm: cs:~openstack-charmers/keystone
     num_units: 1
     options:
       openstack-origin: *openstack-origin
     to:
       - '13'
+    channel: candidate
 
   neutron-gateway:
-    charm: cs:~openstack-charmers-next/neutron-gateway
+    charm: cs:~openstack-charmers/neutron-gateway
     num_units: 1
     options:
       openstack-origin: *openstack-origin
       bridge-mappings: physnet1:br-ex
     to:
       - '14'
+    channel: candidate
 
   glance:
-    charm: cs:~openstack-charmers-next/glance
+    charm: cs:~openstack-charmers/glance
     num_units: 1
     options:
       openstack-origin: *openstack-origin
     to:
       - '15'
+    channel: candidate
 
   neutron-openvswitch:
-    charm: cs:~openstack-charmers-next/neutron-openvswitch
+    charm: cs:~openstack-charmers/neutron-openvswitch
+    channel: candidate
 
   cinder:
-    charm: cs:~openstack-charmers-next/cinder
+    charm: cs:~openstack-charmers/cinder
     num_units: 1
     options:
       openstack-origin: *openstack-origin
@@ -148,12 +165,13 @@ applications:
       glance-api-version: 2
     to:
       - '16'
+    channel: candidate
 
   cinder-ceph:
     charm: ../../../cinder-ceph
 
   nova-compute:
-    charm: cs:~openstack-charmers-next/nova-compute
+    charm: cs:~openstack-charmers/nova-compute
     num_units: 1
     storage:
       ephemeral-device: '40G'
@@ -165,6 +183,7 @@ applications:
       debug: true
     to:
       - '17'
+    channel: candidate
 
 relations:
 
