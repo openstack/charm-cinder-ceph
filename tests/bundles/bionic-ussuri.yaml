@@ -66,14 +66,12 @@ applications:
   rabbitmq-server:
     charm: cs:~openstack-charmers/rabbitmq-server
     num_units: 1
-    channel: candidate
   percona-cluster:
     charm: cs:~openstack-charmers/percona-cluster
     num_units: 1
     options:
       max-connections: 1000
       innodb-buffer-pool-size: 256M
-    channel: candidate
   nova-cloud-controller:
     charm: cs:~openstack-charmers/nova-cloud-controller
     num_units: 1
@@ -81,14 +79,12 @@ applications:
       openstack-origin: cloud:bionic-ussuri
       network-manager: Neutron
       debug: true
-    channel: candidate
   placement:
     charm: cs:~openstack-charmers/placement
     num_units: 1
     constraints: mem=1G
     options:
       openstack-origin: cloud:bionic-ussuri
-    channel: candidate
   neutron-api:
     charm: cs:~openstack-charmers/neutron-api
     num_units: 1
@@ -97,29 +93,24 @@ applications:
       openstack-origin: cloud:bionic-ussuri
       flat-network-providers: physnet1
       neutron-security-groups: true
-    channel: candidate
   keystone:
     charm: cs:~openstack-charmers/keystone
     num_units: 1
     options:
       openstack-origin: cloud:bionic-ussuri
-    channel: candidate
   neutron-gateway:
     charm: cs:~openstack-charmers/neutron-gateway
     num_units: 1
     options:
       openstack-origin: cloud:bionic-ussuri
       bridge-mappings: physnet1:br-ex
-    channel: candidate
   glance:
     charm: cs:~openstack-charmers/glance
     num_units: 1
     options:
       openstack-origin: cloud:bionic-ussuri
-    channel: candidate
   neutron-openvswitch:
     charm: cs:~openstack-charmers/neutron-openvswitch
-    channel: candidate
   nova-compute:
     charm: cs:~openstack-charmers/nova-compute
     num_units: 1
@@ -132,7 +123,6 @@ applications:
       ephemeral-device: /dev/vdb
       ephemeral-unmount: /mnt
       debug: true
-    channel: candidate
   ceph-osd:
     charm: cs:~openstack-charmers/ceph-osd
     num_units: 3
@@ -141,14 +131,12 @@ applications:
     options:
       osd-devices: '/dev/test-non-existent'
       source: cloud:bionic-ussuri
-    channel: candidate
   ceph-mon:
     charm: cs:~openstack-charmers/ceph-mon
     num_units: 3
     options:
       monitor-count: '3'
       source: cloud:bionic-ussuri
-    channel: candidate
   cinder:
     charm: cs:~openstack-charmers/cinder
     num_units: 1
@@ -156,6 +144,5 @@ applications:
       openstack-origin: cloud:bionic-ussuri
       block-device: None
       glance-api-version: 2
-    channel: candidate
   cinder-ceph:
     charm: ../../../cinder-ceph

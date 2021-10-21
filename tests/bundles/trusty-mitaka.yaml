@@ -62,7 +62,6 @@ applications:
   rabbitmq-server:
     charm: cs:~openstack-charmers/rabbitmq-server
     num_units: 1
-    channel: candidate
   percona-cluster:
     charm: cs:trusty/percona-cluster
     num_units: 1
@@ -76,7 +75,6 @@ applications:
       openstack-origin: cloud:trusty-mitaka
       network-manager: Neutron
       debug: true
-    channel: candidate
   neutron-api:
     charm: cs:~openstack-charmers/neutron-api
     num_units: 1
@@ -84,29 +82,24 @@ applications:
       openstack-origin: cloud:trusty-mitaka
       flat-network-providers: physnet1
       neutron-security-groups: true
-    channel: candidate
   keystone:
     charm: cs:~openstack-charmers/keystone
     num_units: 1
     options:
       openstack-origin: cloud:trusty-mitaka
-    channel: candidate
   neutron-gateway:
     charm: cs:~openstack-charmers/neutron-gateway
     num_units: 1
     options:
       openstack-origin: cloud:trusty-mitaka
       bridge-mappings: physnet1:br-ex
-    channel: candidate
   glance:
     charm: cs:~openstack-charmers/glance
     num_units: 1
     options:
       openstack-origin: cloud:trusty-mitaka
-    channel: candidate
   neutron-openvswitch:
     charm: cs:~openstack-charmers/neutron-openvswitch
-    channel: candidate
   nova-compute:
     charm: cs:~openstack-charmers/nova-compute
     num_units: 1
@@ -117,7 +110,6 @@ applications:
       enable-live-migration: false
       aa-profile-mode: enforce
       debug: true
-    channel: candidate
   ceph-osd:
     charm: cs:~openstack-charmers/ceph-osd
     num_units: 3
@@ -126,7 +118,6 @@ applications:
     options:
       osd-devices: '/dev/test-non-existent'
       source: cloud:trusty-mitaka
-    channel: candidate
   ceph-mon:
     charm: cs:~openstack-charmers/ceph-mon
     num_units: 3
@@ -134,7 +125,6 @@ applications:
       auth-supported: 'none'
       monitor-count: '3'
       source: cloud:trusty-mitaka
-    channel: candidate
   cinder:
     charm: cs:~openstack-charmers/cinder
     num_units: 1
@@ -144,6 +134,5 @@ applications:
       openstack-origin: cloud:trusty-mitaka
       block-device: None
       glance-api-version: 2
-    channel: candidate
   cinder-ceph:
     charm: ../../../cinder-ceph
