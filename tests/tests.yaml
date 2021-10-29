@@ -5,33 +5,32 @@ comment: |
         cinder and ceph-mon zaza charm tests.
 
 smoke_bundles:
-  - bionic-train
+  - focal-ussuri
 
 gate_bundles:
-  - hirsute-wallaby-ec
-  - hirsute-wallaby
-  - focal-xena-ec
-  - focal-xena
-  - focal-wallaby-ec
-  - focal-wallaby
-  - focal-victoria-ec
-  - focal-victoria
+  - bionic-queens
+  - bionic-stein
+  - bionic-ussuri
   - focal-ussuri-ec
   - focal-ussuri
-  - bionic-ussuri
-  - bionic-train
-  - bionic-stein
-  - bionic-queens
-  - xenial-mitaka
-
-dev_bundles:
-  - trusty-mitaka
-  - xenial-ocata
-  - xenial-pike
-  - xenial-queens
-  - bionic-rocky
+  - focal-victoria-ec
+  - focal-victoria
+  - focal-wallaby-ec
+  - focal-wallaby
+  - focal-xena-ec
+  - focal-xena
+  - hirsute-wallaby-ec
+  - hirsute-wallaby
   - impish-xena-ec
   - impish-xena
+
+dev_bundles:
+  - bionic-rocky
+  - bionic-train
+  - focal-yoga-ec
+  - focal-yoga
+  - jammy-yoga-ec
+  - jammy-yoga
 
 configure:
   - zaza.openstack.charm_tests.glance.setup.add_cirros_image
@@ -59,5 +58,9 @@ tests_options:
   policyd:
     service: cinder
   force_deploy:
+    - hirsute-wallaby
+    - hirsute-wallaby-ec
     - impish-xena
     - impish-xena-ec
+    - jammy-yoga
+    - jammy-yoga-ec
