@@ -5,28 +5,15 @@ comment: |
         cinder and ceph-mon zaza charm tests.
 
 smoke_bundles:
-  - focal-ussuri
+  - focal-xena
 
 gate_bundles:
-  - bionic-queens
-  - bionic-stein
-  - bionic-ussuri
-  - focal-ussuri-ec
-  - focal-ussuri
-  - focal-victoria-ec
-  - focal-victoria
-  - focal-wallaby-ec
-  - focal-wallaby
   - focal-xena-ec
   - focal-xena
-  - hirsute-wallaby-ec
-  - hirsute-wallaby
   - impish-xena-ec
   - impish-xena
 
 dev_bundles:
-  - bionic-rocky
-  - bionic-train
   - focal-yoga-ec
   - focal-yoga
   - jammy-yoga-ec
@@ -58,8 +45,6 @@ tests_options:
   policyd:
     service: cinder
   force_deploy:
-    - hirsute-wallaby
-    - hirsute-wallaby-ec
     - impish-xena
     - impish-xena-ec
     - jammy-yoga

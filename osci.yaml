@@ -1,73 +1,46 @@
 - project:
     templates:
-      - charm-yoga-unit-jobs
-      - charm-yoga-functional-jobs
+      - charm-unit-jobs-py38
+      - charm-unit-jobs-py39
       - charm-xena-functional-jobs
-      - charm-wallaby-functional-jobs
-      - charm-victoria-functional-jobs
-      - charm-ussuri-functional-jobs
-      - charm-stein-functional-jobs
-      - charm-queens-functional-jobs
+      - charm-yoga-functional-jobs
     check:
       jobs:
-      - focal-ussuri-ec_cinder-ceph
-      - focal-victoria-ec_cinder-ceph
-      - focal-wallaby-ec_cinder-ceph
       - focal-xena-ec_cinder-ceph
       - focal-yoga-ec_cinder-ceph:
           voting: false
-      - hisute-wallaby-ec_cinder-ceph
       - impish-xena-ec_cinder-ceph:
           voting: false
       - jammy-yoga-ec_cinder-ceph:
           voting: false
 
 - job:
-    name: jammy-yoga-ec_cinder-ceph
-    parent: func-target
-    dependencies: &smoke-jobs
-      - bionic-ussuri
-    vars:
-      tox_extra_args: jammy-yoga-ec
-- job:
-    name: impish-xena-ec_cinder-ceph
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: impish-xena-ec
-- job:
-    name: hisute-wallaby-ec_cinder-ceph
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: hirsute-wallaby-ec
-- job:
-    name: focal-yoga-ec_cinder-ceph
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: focal-yoga-ec
-- job:
     name: focal-xena-ec_cinder-ceph
     parent: func-target
-    dependencies: *smoke-jobs
+    dependencies:
+      - osci-lint
+      - tox-py38
+      - tox-py39
     vars:
       tox_extra_args: focal-xena-ec
 - job:
-    name: focal-wallaby-ec_cinder-ceph
+    name: focal-yoga-ec_cinder-ceph
     parent: func-target
-    dependencies: *smoke-jobs
+    dependencies:
+      - focal-xena-ec_cinder-ceph
     vars:
-      tox_extra_args: focal-wallaby-ec
+      tox_extra_args: focal-yoga-ec
 - job:
-    name: focal-victoria-ec_cinder-ceph
+    name: impish-xena-ec_cinder-ceph
     parent: func-target
-    dependencies: *smoke-jobs
+    dependencies:
+      - focal-xena-ec_cinder-ceph
     vars:
-      tox_extra_args: focal-victoria-ec
+      tox_extra_args: impish-xena-ec
 - job:
-    name: focal-ussuri-ec_cinder-ceph
+    name: jammy-yoga-ec_cinder-ceph
     parent: func-target
-    dependencies: *smoke-jobs
+    dependencies:
+      - focal-xena-ec_cinder-ceph
     vars:
-      tox_extra_args: focal-ussuri-ec
+      tox_extra_args: jammy-yoga-ec
