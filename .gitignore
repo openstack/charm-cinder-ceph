@@ -4,6 +4,7 @@ bin
 .tox
 tags
 *.sw[nop]
+*.charm
 *.pyc
 .idea
 .stestr
