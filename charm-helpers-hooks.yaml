@@ -9,6 +9,7 @@ include:
     - contrib.openstack.utils
     - contrib.storage
     - contrib.hahelpers
+    - contrib.hardware.pci
     - contrib.network.ip
     - contrib.python
     - payload.execd

@@ -12,7 +12,7 @@ tags:
 - misc
 series:
 - focal
-- impish
+- jammy
 subordinate: true
 provides:
   storage-backend:
