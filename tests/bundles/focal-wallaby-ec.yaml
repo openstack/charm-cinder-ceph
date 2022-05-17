@@ -1,3 +1,5 @@
+local_overlay_enabled: False
+
 variables:
   openstack-origin: &openstack-origin cloud:focal-wallaby
 
@@ -31,20 +33,26 @@ machines:
 applications:
 
   nova-cloud-controller-mysql-router:
-    charm: cs:~openstack-charmers/mysql-router
+    charm: ch:mysql-router
+    channel: 8.0/edge
   placement-mysql-router:
-    charm: cs:~openstack-charmers/mysql-router
+    charm: ch:mysql-router
+    channel: 8.0/edge
   keystone-mysql-router:
-    charm: cs:~openstack-charmers/mysql-router
+    charm: ch:mysql-router
+    channel: 8.0/edge
   glance-mysql-router:
-    charm: cs:~openstack-charmers/mysql-router
+    charm: ch:mysql-router
+    channel: 8.0/edge
   neutron-api-mysql-router:
-    charm: cs:~openstack-charmers/mysql-router
+    charm: ch:mysql-router
+    channel: 8.0/edge
   cinder-mysql-router:
-    charm: cs:~openstack-charmers/mysql-router
+    charm: ch:mysql-router
+    channel: 8.0/edge
 
   mysql-innodb-cluster:
-    charm: cs:~openstack-charmers/mysql-innodb-cluster
+    charm: ch:mysql-innodb-cluster
     num_units: 3
     options:
       source: *openstack-origin
@@ -52,9 +60,10 @@ applications:
       - '0'
       - '1'
       - '2'
+    channel: 8.0/edge
 
   ceph-osd:
-    charm: cs:~openstack-charmers/ceph-osd
+    charm: ch:ceph-osd
     num_units: 6
     storage:
       osd-devices: '10G'
@@ -68,9 +77,10 @@ applications:
       - '18'
       - '19'
       - '20'
+    channel: pacific/edge
 
   ceph-mon:
-    charm: cs:~openstack-charmers/ceph-mon
+    charm: ch:ceph-mon
     num_units: 3
     options:
       monitor-count: '3'
@@ -79,15 +89,17 @@ applications:
       - '6'
       - '7'
       - '8'
+    channel: pacific/edge
 
   rabbitmq-server:
-    charm: cs:~openstack-charmers/rabbitmq-server
+    charm: ch:rabbitmq-server
     num_units: 1
     to:
       - '9'
+    channel: 3.8/edge
 
   nova-cloud-controller:
-    charm: cs:~openstack-charmers/nova-cloud-controller
+    charm: ch:nova-cloud-controller
     num_units: 1
     options:
       openstack-origin: *openstack-origin
@@ -95,18 +107,20 @@ applications:
       debug: true
     to:
       - '10'
+    channel: wallaby/edge
 
   placement:
-    charm: cs:~openstack-charmers/placement
+    charm: ch:placement
     num_units: 1
     constraints: mem=1G
     options:
       openstack-origin: *openstack-origin
     to:
       - '11'
+    channel: wallaby/edge
 
   neutron-api:
-    charm: cs:~openstack-charmers/neutron-api
+    charm: ch:neutron-api
     num_units: 1
     options:
       manage-neutron-plugin-legacy-mode: true
@@ -116,37 +130,42 @@ applications:
       neutron-security-groups: true
     to:
       - '12'
+    channel: wallaby/edge
 
   keystone:
-    charm: cs:~openstack-charmers/keystone
+    charm: ch:keystone
     num_units: 1
     options:
       openstack-origin: *openstack-origin
     to:
       - '13'
+    channel: wallaby/edge
 
   neutron-gateway:
-    charm: cs:~openstack-charmers/neutron-gateway
+    charm: ch:neutron-gateway
     num_units: 1
     options:
       openstack-origin: *openstack-origin
       bridge-mappings: physnet1:br-ex
     to:
       - '14'
+    channel: wallaby/edge
 
   glance:
-    charm: cs:~openstack-charmers/glance
+    charm: ch:glance
     num_units: 1
     options:
       openstack-origin: *openstack-origin
     to:
       - '15'
+    channel: wallaby/edge
 
   neutron-openvswitch:
-    charm: cs:~openstack-charmers/neutron-openvswitch
+    charm: ch:neutron-openvswitch
+    channel: wallaby/edge
 
   cinder:
-    charm: cs:~openstack-charmers/cinder
+    charm: ch:cinder
     num_units: 1
     options:
       openstack-origin: *openstack-origin
@@ -154,16 +173,17 @@ applications:
       glance-api-version: 2
     to:
       - '16'
+    channel: wallaby/edge
 
   cinder-ceph:
-    charm: ../../../cinder-ceph
+    charm: ../../cinder-ceph.charm
     options:
       pool-type: erasure-coded
       ec-profile-k: 4
       ec-profile-m: 2
 
   nova-compute:
-    charm: cs:~openstack-charmers/nova-compute
+    charm: ch:nova-compute
     num_units: 1
     storage:
       ephemeral-device: '40G'
@@ -175,6 +195,7 @@ applications:
       debug: true
     to:
       - '17'
+    channel: wallaby/edge
 
 relations:
 
