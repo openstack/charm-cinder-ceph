@@ -1,52 +1,41 @@
 - project:
     templates:
-      - charm-unit-jobs-py38
       - charm-unit-jobs-py310
-      - charm-xena-functional-jobs
-      - charm-yoga-functional-jobs
+      - charm-zed-functional-jobs
     check:
       jobs:
-      - focal-xena-ec_cinder-ceph
-      - focal-yoga-ec_cinder-ceph:
+      - jammy-yoga-ec_cinder-ceph
+      - jammy-zed-ec_cinder-ceph:
           voting: false
-      - impish-xena-ec_cinder-ceph:
-          voting: false
-      - jammy-yoga-ec_cinder-ceph:
+      - kinetic-zed-ec_cinder-ceph:
           voting: false
     vars:
       needs_charm_build: true
       charm_build_name: cinder-ceph
       build_type: charmcraft
+      charmcraft_channel: 2.0/stable
 
-- job:
-    name: focal-xena-ec_cinder-ceph
-    parent: func-target
-    dependencies:
-      - charm-build
-      - osci-lint
-      - tox-py38
-      - name: tox-py310
-        soft: true
-    vars:
-      tox_extra_args: focal-xena-ec
-- job:
-    name: focal-yoga-ec_cinder-ceph
-    parent: func-target
-    dependencies:
-      - focal-xena-ec_cinder-ceph
-    vars:
-      tox_extra_args: focal-yoga-ec
-- job:
-    name: impish-xena-ec_cinder-ceph
-    parent: func-target
-    dependencies:
-      - focal-xena-ec_cinder-ceph
-    vars:
-      tox_extra_args: impish-xena-ec
 - job:
     name: jammy-yoga-ec_cinder-ceph
     parent: func-target
     dependencies:
-      - focal-xena-ec_cinder-ceph
+      - charm-build
+      - osci-lint
+      - name: tox-py310
+        soft: true
     vars:
       tox_extra_args: jammy-yoga-ec
+- job:
+    name: jammy-zed-ec_cinder-ceph
+    parent: func-target
+    dependencies:
+      - jammy-yoga-ec_cinder-ceph
+    vars:
+      tox_extra_args: jammy-zed-ec
+- job:
+    name: kinetic-zed-ec_cinder-ceph
+    parent: func-target
+    dependencies:
+      - jammy-yoga-ec_cinder-ceph
+    vars:
+      tox_extra_args: kinetic-zed-ec

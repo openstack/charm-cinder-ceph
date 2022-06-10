@@ -5,19 +5,19 @@ comment: |
         cinder and ceph-mon zaza charm tests.
 
 smoke_bundles:
-  - focal-xena
+  - jammy-yoga
 
 gate_bundles:
-  - focal-xena-ec
-  - focal-xena
-  - impish-xena-ec
-  - impish-xena
-
-dev_bundles:
-  - focal-yoga-ec
-  - focal-yoga
   - jammy-yoga-ec
   - jammy-yoga
+
+dev_bundles:
+  - jammy-yoga-ec
+  - jammy-yoga
+  - jammy-zed-ec
+  - jammy-zed
+  - kinetic-zed-ec
+  - kinetic-zed
 
 configure:
   - zaza.openstack.charm_tests.glance.setup.add_cirros_image
@@ -45,7 +45,5 @@ tests_options:
   policyd:
     service: cinder
   force_deploy:
-    - impish-xena
-    - impish-xena-ec
-    - jammy-yoga
-    - jammy-yoga-ec
+    - kinetic-zed
+    - kinetic-zed-ec

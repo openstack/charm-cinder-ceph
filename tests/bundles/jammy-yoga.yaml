@@ -69,7 +69,7 @@ applications:
       - '3'
       - '4'
       - '5'
-    channel: quincy/edge
+    channel: latest/edge
 
   ceph-mon:
     charm: ch:ceph-mon
@@ -81,7 +81,7 @@ applications:
       - '6'
       - '7'
       - '8'
-    channel: quincy/edge
+    channel: latest/edge
 
   rabbitmq-server:
     charm: ch:rabbitmq-server
@@ -99,7 +99,7 @@ applications:
       debug: true
     to:
       - '10'
-    channel: yoga/edge
+    channel: latest/edge
 
   placement:
     charm: ch:placement
@@ -109,7 +109,7 @@ applications:
       openstack-origin: *openstack-origin
     to:
       - '11'
-    channel: yoga/edge
+    channel: latest/edge
 
   neutron-api:
     charm: ch:neutron-api
@@ -122,7 +122,7 @@ applications:
       neutron-security-groups: true
     to:
       - '12'
-    channel: yoga/edge
+    channel: latest/edge
 
   keystone:
     charm: ch:keystone
@@ -131,7 +131,7 @@ applications:
       openstack-origin: *openstack-origin
     to:
       - '13'
-    channel: yoga/edge
+    channel: latest/edge
 
   neutron-gateway:
     charm: ch:neutron-gateway
@@ -141,7 +141,7 @@ applications:
       bridge-mappings: physnet1:br-ex
     to:
       - '14'
-    channel: yoga/edge
+    channel: latest/edge
 
   glance:
     charm: ch:glance
@@ -150,11 +150,11 @@ applications:
       openstack-origin: *openstack-origin
     to:
       - '15'
-    channel: yoga/edge
+    channel: latest/edge
 
   neutron-openvswitch:
     charm: ch:neutron-openvswitch
-    channel: yoga/edge
+    channel: latest/edge
 
   cinder:
     charm: ch:cinder
@@ -165,7 +165,7 @@ applications:
       glance-api-version: 2
     to:
       - '16'
-    channel: yoga/edge
+    channel: latest/edge
 
   cinder-ceph:
     charm: ../../cinder-ceph.charm
@@ -183,7 +183,7 @@ applications:
       debug: true
     to:
       - '17'
-    channel: yoga/edge
+    channel: latest/edge
 
 relations:
 
