@@ -7,12 +7,8 @@
     check:
       jobs:
       - focal-xena-ec_cinder-ceph
-      - focal-yoga-ec_cinder-ceph:
-          voting: false
-      - impish-xena-ec_cinder-ceph:
-          voting: false
-      - jammy-yoga-ec_cinder-ceph:
-          voting: false
+      - focal-yoga-ec_cinder-ceph
+      - jammy-yoga-ec_cinder-ceph
     vars:
       needs_charm_build: true
       charm_build_name: cinder-ceph
@@ -36,13 +32,6 @@
       - focal-xena-ec_cinder-ceph
     vars:
       tox_extra_args: focal-yoga-ec
-- job:
-    name: impish-xena-ec_cinder-ceph
-    parent: func-target
-    dependencies:
-      - focal-xena-ec_cinder-ceph
-    vars:
-      tox_extra_args: impish-xena-ec
 - job:
     name: jammy-yoga-ec_cinder-ceph
     parent: func-target

@@ -21,6 +21,8 @@ cliff<3.0.0
 
 # Dependencies of stestr. Newer versions use keywords that didn't exist in
 # python 3.5 yet (e.g. "ModuleNotFoundError")
+importlib-metadata<5.0.0; python_version < '3.8' and python_version >= '3.6'
+importlib-resources<5.0.0; python_version < '3.8' and python_version >= '3.6'
 importlib-metadata<3.0.0; python_version < '3.6'
 importlib-resources<3.0.0; python_version < '3.6'
 
@@ -37,7 +39,8 @@ git+https://github.com/openstack-charmers/zaza.git@stable/yoga#egg=zaza
 git+https://github.com/openstack-charmers/zaza-openstack-tests.git@stable/yoga#egg=zaza.openstack
 
 # Needed for charm-glance:
-git+https://opendev.org/openstack/tempest.git#egg=tempest;python_version>='3.6'
+git+https://opendev.org/openstack/tempest.git#egg=tempest;python_version>='3.8'
+tempest<31.0.0;python_version<'3.8' and python_version>='3.6'
 tempest<24.0.0;python_version<'3.6'
 
 croniter            # needed for charm-rabbitmq-server unit tests
