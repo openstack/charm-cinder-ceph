@@ -1,56 +1,11 @@
 - project:
     templates:
-      - charm-unit-jobs
-      - charm-functional-jobs
-    check:
-      jobs:
-      - impish-xena:
-          voting: false
-      - impish-xena-ec_cinder-ceph:
-          voting: false
-      - hisute-wallaby-ec_cinder-ceph
-      - focal-xena:
-          voting: false
-      - focal-xena-ec_cinder-ceph:
-          voting: false
-      - focal-wallaby-ec_cinder-ceph
-      - focal-victoria-ec_cinder-ceph
-      - focal-ussuri-ec_cinder-ceph
-
-- job:
-    name: impish-xena-ec_cinder-ceph
-    parent: func-target
-    dependencies: &smoke-jobs
-      - bionic-ussuri
+      - charm-unit-jobs-py36
+      - charm-queens-functional-jobs
+      - charm-rocky-functional-jobs
+      - charm-stein-functional-jobs
+      - charm-train-functional-jobs
     vars:
-      tox_extra_args: impish-xena-ec
-- job:
-    name: hisute-wallaby-ec_cinder-ceph
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: hirsute-wallaby-ec
-- job:
-    name: focal-xena-ec_cinder-ceph
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: focal-xena-ec
-- job:
-    name: focal-wallaby-ec_cinder-ceph
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: focal-wallaby-ec
-- job:
-    name: focal-victoria-ec_cinder-ceph
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: focal-victoria-ec
-- job:
-    name: focal-ussuri-ec_cinder-ceph
-    parent: func-target
-    dependencies: *smoke-jobs
-    vars:
-      tox_extra_args: focal-ussuri-ec
+      needs_charm_build: true
+      charm_build_name: cinder-ceph
+      build_type: charmcraft
