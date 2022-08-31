@@ -12,6 +12,7 @@ tags:
 - misc
 series:
 - jammy
+- kinetic
 subordinate: true
 provides:
   storage-backend:
