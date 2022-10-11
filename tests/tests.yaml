@@ -33,9 +33,6 @@ tests:
   - zaza.openstack.charm_tests.cinder.tests.CinderTests
   - zaza.openstack.charm_tests.ceph.mon.tests.CinderCephMonTest
   - zaza.openstack.charm_tests.cinder.tests.SecurityTests
-  - zaza.openstack.charm_tests.ceph.tests.CephLowLevelTest
-  - zaza.openstack.charm_tests.ceph.tests.CephRelationTest
-  - zaza.openstack.charm_tests.ceph.tests.CephTest
   - zaza.openstack.charm_tests.ceph.tests.BlueStoreCompressionCharmOperation
   - zaza.openstack.charm_tests.ceph.osd.tests.SecurityTest
   - zaza.openstack.charm_tests.policyd.tests.CinderTests
