@@ -32,33 +32,31 @@ applications:
 
   nova-cloud-controller-mysql-router:
     charm: ch:mysql-router
-    channel: latest/edge
+    channel: 8.0/edge
   placement-mysql-router:
     charm: ch:mysql-router
-    channel: latest/edge
+    channel: 8.0/edge
   keystone-mysql-router:
     charm: ch:mysql-router
-    channel: latest/edge
+    channel: 8.0/edge
   glance-mysql-router:
     charm: ch:mysql-router
-    channel: latest/edge
+    channel: 8.0/edge
   neutron-api-mysql-router:
     charm: ch:mysql-router
-    channel: latest/edge
+    channel: 8.0/edge
   cinder-mysql-router:
     charm: ch:mysql-router
-    channel: latest/edge
+    channel: 8.0/edge
 
   mysql-innodb-cluster:
     charm: ch:mysql-innodb-cluster
     num_units: 3
-    options:
-      source: *openstack-origin
     to:
       - '0'
       - '1'
       - '2'
-    channel: latest/edge
+    channel: 8.0/edge
 
   ceph-osd:
     charm: ch:ceph-osd
@@ -75,7 +73,7 @@ applications:
       - '18'
       - '19'
       - '20'
-    channel: latest/edge
+    channel: quincy/edge
 
   ceph-mon:
     charm: ch:ceph-mon
@@ -87,14 +85,14 @@ applications:
       - '6'
       - '7'
       - '8'
-    channel: latest/edge
+    channel: quincy/edge
 
   rabbitmq-server:
     charm: ch:rabbitmq-server
     num_units: 1
     to:
       - '9'
-    channel: latest/edge
+    channel: 3.9/edge
 
   nova-cloud-controller:
     charm: ch:nova-cloud-controller
@@ -105,7 +103,7 @@ applications:
       debug: true
     to:
       - '10'
-    channel: latest/edge
+    channel: zed/edge
 
   placement:
     charm: ch:placement
@@ -115,7 +113,7 @@ applications:
       openstack-origin: *openstack-origin
     to:
       - '11'
-    channel: latest/edge
+    channel: zed/edge
 
   neutron-api:
     charm: ch:neutron-api
@@ -128,7 +126,7 @@ applications:
       neutron-security-groups: true
     to:
       - '12'
-    channel: latest/edge
+    channel: zed/edge
 
   keystone:
     charm: ch:keystone
@@ -137,7 +135,7 @@ applications:
       openstack-origin: *openstack-origin
     to:
       - '13'
-    channel: latest/edge
+    channel: zed/edge
 
   neutron-gateway:
     charm: ch:neutron-gateway
@@ -147,7 +145,7 @@ applications:
       bridge-mappings: physnet1:br-ex
     to:
       - '14'
-    channel: latest/edge
+    channel: zed/edge
 
   glance:
     charm: ch:glance
@@ -156,11 +154,11 @@ applications:
       openstack-origin: *openstack-origin
     to:
       - '15'
-    channel: latest/edge
+    channel: zed/edge
 
   neutron-openvswitch:
     charm: ch:neutron-openvswitch
-    channel: latest/edge
+    channel: zed/edge
 
   cinder:
     charm: ch:cinder
@@ -171,7 +169,7 @@ applications:
       glance-api-version: 2
     to:
       - '16'
-    channel: latest/edge
+    channel: zed/edge
 
   cinder-ceph:
     charm: ../../cinder-ceph.charm
@@ -193,7 +191,7 @@ applications:
       debug: true
     to:
       - '17'
-    channel: latest/edge
+    channel: zed/edge
 
 relations:
 
