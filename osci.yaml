@@ -13,7 +13,7 @@
       needs_charm_build: true
       charm_build_name: cinder-ceph
       build_type: charmcraft
-      charmcraft_channel: 2.0/stable
+      charmcraft_channel: 2.1/stable
 
 - job:
     name: jammy-yoga-ec_cinder-ceph
@@ -24,18 +24,18 @@
       - name: tox-py310
         soft: true
     vars:
-      tox_extra_args: jammy-yoga-ec
+      tox_extra_args: '-- jammy-yoga-ec'
 - job:
     name: jammy-zed-ec_cinder-ceph
     parent: func-target
     dependencies:
       - jammy-yoga-ec_cinder-ceph
     vars:
-      tox_extra_args: jammy-zed-ec
+      tox_extra_args: '-- jammy-zed-ec'
 - job:
     name: kinetic-zed-ec_cinder-ceph
     parent: func-target
     dependencies:
       - jammy-yoga-ec_cinder-ceph
     vars:
-      tox_extra_args: kinetic-zed-ec
+      tox_extra_args: '-- kinetic-zed-ec'
