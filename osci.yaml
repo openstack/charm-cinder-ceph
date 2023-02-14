@@ -1,13 +1,16 @@
 - project:
     templates:
       - charm-unit-jobs-py310
-      - charm-zed-functional-jobs
+      - charm-functional-jobs
     check:
       jobs:
-      - jammy-yoga-ec_cinder-ceph
       - jammy-zed-ec_cinder-ceph:
           voting: false
       - kinetic-zed-ec_cinder-ceph:
+          voting: false
+      - jammy-antelope-ec_cinder-ceph:
+          voting: false
+      - lunar-antelope-ec_cinder-ceph:
           voting: false
     vars:
       needs_charm_build: true
@@ -16,7 +19,7 @@
       charmcraft_channel: 2.1/stable
 
 - job:
-    name: jammy-yoga-ec_cinder-ceph
+    name: jammy-zed-ec_cinder-ceph
     parent: func-target
     dependencies:
       - charm-build
@@ -24,18 +27,25 @@
       - name: tox-py310
         soft: true
     vars:
-      tox_extra_args: '-- jammy-yoga-ec'
-- job:
-    name: jammy-zed-ec_cinder-ceph
-    parent: func-target
-    dependencies:
-      - jammy-yoga-ec_cinder-ceph
-    vars:
       tox_extra_args: '-- jammy-zed-ec'
 - job:
     name: kinetic-zed-ec_cinder-ceph
     parent: func-target
     dependencies:
-      - jammy-yoga-ec_cinder-ceph
+      - jammy-zed-ec_cinder-ceph
     vars:
       tox_extra_args: '-- kinetic-zed-ec'
+- job:
+    name: jammy-antelope-ec_cinder-ceph
+    parent: func-target
+    dependencies:
+      - jammy-zed-ec_cinder-ceph
+    vars:
+      tox_extra_args: '-- jammy-antelope-ec'
+- job:
+    name: lunar-antelope-ec_cinder-ceph
+    parent: func-target
+    dependencies:
+      - jammy-zed-ec_cinder-ceph
+    vars:
+      tox_extra_args: '-- lunar-antelope-ec'

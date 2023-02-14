@@ -5,19 +5,19 @@ comment: |
         cinder and ceph-mon zaza charm tests.
 
 smoke_bundles:
-  - jammy-yoga
+  - jammy-zed
 
 gate_bundles:
-  - jammy-yoga-ec
-  - jammy-yoga
-
-dev_bundles:
-  - jammy-yoga-ec
-  - jammy-yoga
   - jammy-zed-ec
   - jammy-zed
+
+dev_bundles:
+  - jammy-antelope-ec
+  - jammy-antelope
   - kinetic-zed-ec
   - kinetic-zed
+  - lunar-antelope-ec
+  - lunar-antelope
 
 configure:
   - zaza.openstack.charm_tests.glance.setup.add_cirros_image
@@ -44,3 +44,5 @@ tests_options:
   force_deploy:
     - kinetic-zed
     - kinetic-zed-ec
+    - lunar-antelope
+    - lunar-antelope-ec
