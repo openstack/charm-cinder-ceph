@@ -14,8 +14,6 @@ gate_bundles:
 dev_bundles:
   - jammy-antelope-ec
   - jammy-antelope
-  - kinetic-zed-ec
-  - kinetic-zed
   - lunar-antelope-ec
   - lunar-antelope
 
@@ -42,7 +40,5 @@ tests_options:
   policyd:
     service: cinder
   force_deploy:
-    - kinetic-zed
-    - kinetic-zed-ec
     - lunar-antelope
     - lunar-antelope-ec
