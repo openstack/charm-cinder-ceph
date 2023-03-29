@@ -4,12 +4,8 @@
       - charm-functional-jobs
     check:
       jobs:
-      - jammy-zed-ec_cinder-ceph:
-          voting: false
-      - kinetic-zed-ec_cinder-ceph:
-          voting: false
-      - jammy-antelope-ec_cinder-ceph:
-          voting: false
+      - jammy-zed-ec_cinder-ceph
+      - jammy-antelope-ec_cinder-ceph
       - lunar-antelope-ec_cinder-ceph:
           voting: false
     vars:
@@ -28,13 +24,6 @@
         soft: true
     vars:
       tox_extra_args: '-- jammy-zed-ec'
-- job:
-    name: kinetic-zed-ec_cinder-ceph
-    parent: func-target
-    dependencies:
-      - jammy-zed-ec_cinder-ceph
-    vars:
-      tox_extra_args: '-- kinetic-zed-ec'
 - job:
     name: jammy-antelope-ec_cinder-ceph
     parent: func-target
