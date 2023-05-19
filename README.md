@@ -29,20 +29,11 @@ Specialised use cases:
 
 ## Configuration
 
-This section covers common and/or important configuration options. See file
-`config.yaml` for the full list of options, along with their descriptions and
-default values. See the [Juju documentation][juju-docs-config-apps] for details
-on configuring applications.
-
-#### `pool-type`
-
-The `pool-type` option dictates the storage pool type. See section 'Ceph pool
-type' for more information.
-
-#### `rbd-pool-name`
-
-The `rbd-pool-name` option sets an existing rbd pool that Cinder should map
-to.
+To display all configuration option information run `juju config
+<application>`. If the application is not deployed then see the charm's
+[Configure tab][cinder-ceph-configure] in the Charmhub. Finally, the [Juju
+documentation][juju-docs-config-apps] provides general guidance on configuring
+applications.
 
 ## Ceph pool type
 
@@ -111,28 +102,14 @@ the compression behaviour.
 
 ## Deployment
 
-These instructions will show how to deploy Cinder and connect it to an
-existing Juju-managed Ceph cluster.
+The cinder-ceph application requires the cinder application and a Ceph cluster
+to be present.
 
-Let file `cinder.yaml` contain the following:
+First configure Cinder to not use a local block device. Then deploy
+cinder-ceph, and add a relation to both the cinder and ceph-mon applications:
 
-    cinder:
-      block-device: None
-
-Deploy Cinder and add relations to essential OpenStack components:
-
-    juju deploy --config cinder.yaml cinder
-
-    juju add-relation cinder:cinder-volume-service nova-cloud-controller:cinder-volume-service
-    juju add-relation cinder:shared-db mysql:shared-db
-    juju add-relation cinder:identity-service keystone:identity-service
-    juju add-relation cinder:amqp rabbitmq-server:amqp
-
-Now deploy cinder-ceph and add a relation to both the cinder and ceph-mon
-applications:
-
+    juju config cinder block-device=None
     juju deploy cinder-ceph
-
     juju add-relation cinder-ceph:storage-backend cinder:storage-backend
     juju add-relation cinder-ceph:ceph ceph-mon:client
 
@@ -145,13 +122,14 @@ deployed a relation is needed between them:
 
 The OpenStack Charms project maintains two documentation guides:
 
-* [OpenStack Charm Guide][cg]: for project information, including development
-  and support notes
-* [OpenStack Charms Deployment Guide][cdg]: for charm usage information
+* [OpenStack Charm Guide][cg]: the primary source of information for
+  OpenStack charms
+* [OpenStack Charms Deployment Guide][cdg]: a step-by-step guide for
+  deploying OpenStack with charms
 
 # Bugs
 
-Please report bugs on [Launchpad][lp-bugs-charm-cinder-ceph].
+Please report bugs on [Launchpad][cinder-ceph-filebug].
 
 <!-- LINKS -->
 
@@ -159,13 +137,13 @@ Please report bugs on [Launchpad][lp-bugs-charm-cinder-ceph].
 [cdg]: https://docs.openstack.org/project-deploy-guide/charm-deployment-guide
 [ceph-upstream]: https://ceph.io
 [cinder-upstream]: https://docs.openstack.org/cinder
-[cinder-charm]: https://jaas.ai/cinder
-[ceph-mon-charm]: https://jaas.ai/ceph-mon
-[ceph-proxy-charm]: https://jaas.ai/ceph-proxy
-[cinder-purestorage-charm]: https://jaas.ai/cinder-purestorage
-[juju-docs-actions]: https://jaas.ai/docs/actions
-[juju-docs-config-apps]: https://juju.is/docs/configuring-applications
-[lp-bugs-charm-cinder-ceph]: https://bugs.launchpad.net/charm-cinder-ceph/+filebug
+[cinder-charm]: https://charmhub.io/cinder
+[ceph-mon-charm]: https://charmhub.io/ceph-mon
+[ceph-proxy-charm]: https://charmhub.io/ceph-proxy
+[cinder-purestorage-charm]: https://charmhub.io/cinder-purestorage
+[juju-docs-config-apps]: https://juju.is/docs/olm/configure-an-application
+[cinder-ceph-configure]: https://charmhub.io/cinder-ceph/configure
+[cinder-ceph-filebug]: https://bugs.launchpad.net/charm-cinder-ceph/+filebug
 [cdg-ceph-erasure-coding]: https://docs.openstack.org/project-deploy-guide/charm-deployment-guide/latest/app-erasure-coding.html
 [ceph-bluestore-compression]: https://docs.ceph.com/en/latest/rados/configuration/bluestore-config-ref/#inline-compression
 [lp-bug-1727184]: https://bugs.launchpad.net/charm-cinder-ceph/+bug/1727184
