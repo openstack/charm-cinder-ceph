@@ -5,17 +5,19 @@ comment: |
         cinder and ceph-mon zaza charm tests.
 
 smoke_bundles:
-  - jammy-zed
+  - jammy-antelope
 
 gate_bundles:
-  - jammy-zed-ec
-  - jammy-zed
-
-dev_bundles:
   - jammy-antelope-ec
   - jammy-antelope
+
+dev_bundles:
+  - jammy-bobcat-ec
+  - jammy-bobcat
   - lunar-antelope-ec
+  - mantic-bobcat-ec
   - lunar-antelope
+  - mantic-bobcat
 
 configure:
   - zaza.openstack.charm_tests.glance.setup.add_cirros_image
@@ -41,4 +43,6 @@ tests_options:
     service: cinder
   force_deploy:
     - lunar-antelope
+    - mantic-bobcat
     - lunar-antelope-ec
+    - mantic-bobcat-ec
