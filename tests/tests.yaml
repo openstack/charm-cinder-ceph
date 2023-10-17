@@ -14,9 +14,7 @@ gate_bundles:
 dev_bundles:
   - jammy-bobcat-ec
   - jammy-bobcat
-  - lunar-antelope-ec
   - mantic-bobcat-ec
-  - lunar-antelope
   - mantic-bobcat
 
 configure:
@@ -42,7 +40,5 @@ tests_options:
   policyd:
     service: cinder
   force_deploy:
-    - lunar-antelope
     - mantic-bobcat
-    - lunar-antelope-ec
     - mantic-bobcat-ec

@@ -7,8 +7,6 @@
       - jammy-antelope-ec_cinder-ceph
       - jammy-bobcat-ec_cinder-ceph:
           voting: false
-      - lunar-antelope-ec_cinder-ceph:
-          voting: false
       - mantic-bobcat-ec_cinder-ceph:
           voting: false
     vars:
@@ -34,13 +32,6 @@
       - jammy-antelope-ec_cinder-ceph
     vars:
       tox_extra_args: '-- jammy-bobcat-ec'
-- job:
-    name: lunar-antelope-ec_cinder-ceph
-    parent: func-target
-    dependencies:
-      - jammy-antelope-ec_cinder-ceph
-    vars:
-      tox_extra_args: '-- lunar-antelope-ec'
 - job:
     name: mantic-bobcat-ec_cinder-ceph
     parent: func-target
