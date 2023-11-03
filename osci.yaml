@@ -5,8 +5,7 @@
     check:
       jobs:
       - jammy-antelope-ec_cinder-ceph
-      - jammy-bobcat-ec_cinder-ceph:
-          voting: false
+      - jammy-bobcat-ec_cinder-ceph
       - mantic-bobcat-ec_cinder-ceph:
           voting: false
     vars:
