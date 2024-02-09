@@ -7,14 +7,12 @@ description: |
   This charm provides a Ceph storage backend for Cinder
 docs: https://discourse.charmhub.io/t/cinder-ceph-docs-index/10999
 tags:
-- openstack
-- storage
-- file-servers
-- misc
+  - openstack
+  - storage
+  - file-servers
+  - misc
 series:
-- jammy
-- lunar
-- mantic
+  - jammy
 subordinate: true
 provides:
   storage-backend:

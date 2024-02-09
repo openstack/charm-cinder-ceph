@@ -1,22 +1,17 @@
 charm_name: cinder-ceph
 
 comment: |
-        The cinder-ceph charm assertions are intended to be the sum of the
-        cinder and ceph-mon zaza charm tests.
+  The cinder-ceph charm assertions are intended to be the sum of the
+  cinder and ceph-mon zaza charm tests.
 
 smoke_bundles:
-  - jammy-antelope
-
+  - jammy-caracal
 gate_bundles:
-  - jammy-antelope-ec
   - jammy-antelope
-
-dev_bundles:
-  - jammy-bobcat-ec
   - jammy-bobcat
-  - mantic-bobcat-ec
-  - mantic-bobcat
-
+  - jammy-caracal
+dev_bundles:
+  - noble-caracal
 configure:
   - zaza.openstack.charm_tests.glance.setup.add_cirros_image
   - zaza.openstack.charm_tests.glance.setup.add_lts_image
@@ -40,5 +35,4 @@ tests_options:
   policyd:
     service: cinder
   force_deploy:
-    - mantic-bobcat
-    - mantic-bobcat-ec
+    - noble-caracal
