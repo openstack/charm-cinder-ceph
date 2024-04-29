@@ -75,7 +75,7 @@ applications:
       - '18'
       - '19'
       - '20'
-    channel: reef/edge
+    channel: squid/edge
 
   ceph-mon:
     charm: ch:ceph-mon
@@ -87,7 +87,7 @@ applications:
       - '6'
       - '7'
       - '8'
-    channel: reef/edge
+    channel: squid/edge
 
   rabbitmq-server:
     charm: ch:rabbitmq-server
