@@ -57,7 +57,6 @@ options:
     description: |
       Optionally specify an existing rbd pool that cinder should map to.
   rbd-flatten-volume-from-snapshot:
-    default:
     type: boolean
     default: False
     description: |
