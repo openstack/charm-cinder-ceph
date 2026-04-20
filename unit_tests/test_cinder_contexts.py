@@ -290,7 +290,7 @@ class TestCinderContext(CharmTestCase):
                 'mon_hosts': 'ceph-mon-0 ceph-mon-1'
             }
         )
-        self.assertEquals(
+        self.assertEqual(
             contexts.CephReplicationDeviceContext.interfaces,
             ['ceph-replication-device']
         )
