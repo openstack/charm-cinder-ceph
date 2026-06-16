@@ -174,7 +174,7 @@ applications:
     channel: 2024.1/edge
 
   cinder-ceph:
-    charm: ../../cinder-ceph.charm
+    charm: ../../cinder-ceph_ubuntu@22.04-amd64.charm
     options:
       pool-type: erasure-coded
       ec-profile-k: 4
