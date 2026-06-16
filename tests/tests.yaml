@@ -16,8 +16,6 @@ dev_bundles:
   - jammy-yoga
   - jammy-zed-ec
   - jammy-zed
-  - kinetic-zed-ec
-  - kinetic-zed
 
 configure:
   - zaza.openstack.charm_tests.glance.setup.add_cirros_image
@@ -41,6 +39,3 @@ tests:
 tests_options:
   policyd:
     service: cinder
-  force_deploy:
-    - kinetic-zed
-    - kinetic-zed-ec
