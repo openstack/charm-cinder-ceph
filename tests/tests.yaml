@@ -14,8 +14,6 @@ gate_bundles:
 dev_bundles:
   - jammy-bobcat-ec
   - jammy-bobcat
-  - mantic-bobcat-ec
-  - mantic-bobcat
 
 configure:
   - zaza.openstack.charm_tests.glance.setup.add_cirros_image
@@ -39,6 +37,3 @@ tests:
 tests_options:
   policyd:
     service: cinder
-  force_deploy:
-    - mantic-bobcat
-    - mantic-bobcat-ec

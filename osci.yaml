@@ -13,7 +13,7 @@
       needs_charm_build: true
       charm_build_name: cinder-ceph
       build_type: charmcraft
-      charmcraft_channel: 2.x/stable
+      charmcraft_channel: 3.x/stable
 
 - job:
     name: jammy-antelope-ec_cinder-ceph
