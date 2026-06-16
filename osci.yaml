@@ -12,7 +12,7 @@
       needs_charm_build: true
       charm_build_name: cinder-ceph
       build_type: charmcraft
-      charmcraft_channel: 2.1/stable
+      charmcraft_channel: 3.x/stable
 
 - job:
     name: jammy-zed-ec_cinder-ceph
