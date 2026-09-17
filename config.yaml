@@ -69,6 +69,15 @@ options:
       The RBD mirroring mode used for the Ceph pool. This option is only used
       with 'replicated' pool type, as it's not supported for 'erasure-coded'
       pool type - valid values: 'pool' and 'image'
+  disk-geometry:
+    type: string
+    default:
+    description: |
+      Advertised disk geometry for the Ceph backend. Determines what physical
+      and logical block sizes are hinted to nova on volume attach - valid values
+      are '512', '512e', '4k 'or unset, corresponding to (physical, logical)
+      block sizes of (512, 512), (4096, 512), (4096, 4096), and no hint
+      respectively.
   pool-type:
     type: string
     default: replicated
