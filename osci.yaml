@@ -4,11 +4,9 @@
       - charm-functional-jobs
     check:
       jobs:
-      - jammy-antelope-ec_cinder-ceph
-      - jammy-bobcat-ec_cinder-ceph:
-          voting: false
-      - mantic-bobcat-ec_cinder-ceph:
-          voting: false
+        - jammy-antelope-ec_cinder-ceph
+        - jammy-bobcat-ec_cinder-ceph:
+            voting: false
     vars:
       needs_charm_build: true
       charm_build_name: cinder-ceph
@@ -32,10 +30,3 @@
       - jammy-antelope-ec_cinder-ceph
     vars:
       tox_extra_args: '-- jammy-bobcat-ec'
-- job:
-    name: mantic-bobcat-ec_cinder-ceph
-    parent: func-target
-    dependencies:
-      - jammy-antelope-ec_cinder-ceph
-    vars:
-      tox_extra_args: '-- mantic-bobcat-ec'
