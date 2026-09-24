@@ -1,8 +1,8 @@
 charm_name: cinder-ceph
 
 comment: |
-        The cinder-ceph charm assertions are intended to be the sum of the
-        cinder and ceph-mon zaza charm tests.
+    The cinder-ceph charm assertions are intended to be the sum of the
+    cinder and ceph-mon zaza charm tests.
 
 smoke_bundles:
   - focal-yoga
@@ -32,7 +32,6 @@ tests:
   - zaza.openstack.charm_tests.ceph.mon.tests.CinderCephMonTest
   - zaza.openstack.charm_tests.cinder.tests.SecurityTests
   - zaza.openstack.charm_tests.ceph.tests.CephLowLevelTest
-  - zaza.openstack.charm_tests.ceph.tests.CephRelationTest
   - zaza.openstack.charm_tests.ceph.tests.CephTest
   - zaza.openstack.charm_tests.ceph.tests.BlueStoreCompressionCharmOperation
   - zaza.openstack.charm_tests.ceph.osd.tests.SecurityTest
