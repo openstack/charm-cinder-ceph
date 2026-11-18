@@ -6,8 +6,6 @@
       jobs:
       - jammy-zed-ec_cinder-ceph
       - jammy-antelope-ec_cinder-ceph
-      - lunar-antelope-ec_cinder-ceph:
-          voting: false
     vars:
       needs_charm_build: true
       charm_build_name: cinder-ceph
@@ -31,10 +29,3 @@
       - jammy-zed-ec_cinder-ceph
     vars:
       tox_extra_args: '-- jammy-antelope-ec'
-- job:
-    name: lunar-antelope-ec_cinder-ceph
-    parent: func-target
-    dependencies:
-      - jammy-zed-ec_cinder-ceph
-    vars:
-      tox_extra_args: '-- lunar-antelope-ec'
