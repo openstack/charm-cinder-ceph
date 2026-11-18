@@ -110,6 +110,12 @@ class CephSubordinateContext(OSContextGenerator):
                 ('rbd_flatten_volume_from_snapshot',
                  config('rbd-flatten-volume-from-snapshot')))
 
+        if CompareOpenStackReleases(os_codename) >= "yoga" \
+                and config('disk-geometry'):
+            section[service].append(
+                ('disk_geometry',
+                 config('disk-geometry')))
+
         return {'cinder': {'/etc/cinder/cinder.conf': {'sections': section}}}
 
 
