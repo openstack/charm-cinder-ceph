@@ -7,8 +7,6 @@
       - jammy-yoga-ec_cinder-ceph
       - jammy-zed-ec_cinder-ceph:
           voting: false
-      - kinetic-zed-ec_cinder-ceph:
-          voting: false
     vars:
       needs_charm_build: true
       charm_build_name: cinder-ceph
@@ -32,10 +30,3 @@
       - jammy-yoga-ec_cinder-ceph
     vars:
       tox_extra_args: jammy-zed-ec
-- job:
-    name: kinetic-zed-ec_cinder-ceph
-    parent: func-target
-    dependencies:
-      - jammy-yoga-ec_cinder-ceph
-    vars:
-      tox_extra_args: kinetic-zed-ec
